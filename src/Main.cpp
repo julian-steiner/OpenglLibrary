@@ -1,108 +1,7 @@
-#include "glew.h"
-#include "GL/gl.h"
-#include "GLFW/glfw3.h"
-#include <cstddef>
-#include <cstdio>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <vector>
+#include "ProgramCreator.h"
 
-GLuint LoadShaders(const char *vertex_file_path,
-                   const char *fragment_file_path) {
-
-  // Create the shaders
-  GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-  GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-  // Read the Vertex Shader code from the file
-  std::string VertexShaderCode;
-  std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
-  if (VertexShaderStream.is_open()) {
-    std::stringstream sstr;
-    sstr << VertexShaderStream.rdbuf();
-    VertexShaderCode = sstr.str();
-    VertexShaderStream.close();
-  } else {
-    printf("Impossible to open %s. Are you in the right directory ? Don't "
-           "forget to read the FAQ !\n",
-           vertex_file_path);
-    getchar();
-    return 0;
-  }
-
-  // Read the Fragment Shader code from the file
-  std::string FragmentShaderCode;
-  std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
-  if (FragmentShaderStream.is_open()) {
-    std::stringstream sstr;
-    sstr << FragmentShaderStream.rdbuf();
-    FragmentShaderCode = sstr.str();
-    FragmentShaderStream.close();
-  }
-
-  GLint Result = GL_FALSE;
-  int InfoLogLength;
-
-  // Compile Vertex Shader
-  printf("Compiling shader : %s\n", vertex_file_path);
-  char const *VertexSourcePointer = VertexShaderCode.c_str();
-  glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
-  glCompileShader(VertexShaderID);
-
-  // Check Vertex Shader
-  glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
-  glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-  if (InfoLogLength > 0) {
-    std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
-    glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL,
-                       &VertexShaderErrorMessage[0]);
-    printf("%s\n", &VertexShaderErrorMessage[0]);
-  }
-
-  // Compile Fragment Shader
-  printf("Compiling shader : %s\n", fragment_file_path);
-  char const *FragmentSourcePointer = FragmentShaderCode.c_str();
-  glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
-  glCompileShader(FragmentShaderID);
-
-  // Check Fragment Shader
-  glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
-  glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-  if (InfoLogLength > 0) {
-    std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
-    glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL,
-                       &FragmentShaderErrorMessage[0]);
-    printf("%s\n", &FragmentShaderErrorMessage[0]);
-  }
-
-  // Link the program
-  printf("Linking program\n");
-  GLuint ProgramID = glCreateProgram();
-  glAttachShader(ProgramID, VertexShaderID);
-  glAttachShader(ProgramID, FragmentShaderID);
-  glLinkProgram(ProgramID);
-
-  // Check the program
-  glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-  glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-  if (InfoLogLength > 0) {
-    std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-    glGetProgramInfoLog(ProgramID, InfoLogLength, NULL,
-                        &ProgramErrorMessage[0]);
-    printf("%s\n", &ProgramErrorMessage[0]);
-  }
-
-  glDetachShader(ProgramID, VertexShaderID);
-  glDetachShader(ProgramID, FragmentShaderID);
-
-  glDeleteShader(VertexShaderID);
-  glDeleteShader(FragmentShaderID);
-
-  return ProgramID;
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+  glViewport(0, 0, width, height);
 }
 
 int main() {
@@ -123,36 +22,75 @@ int main() {
   }
 
   glfwMakeContextCurrent(window);
+
   glewExperimental = true;
   if (glewInit() != GLEW_OK) {
     std::fprintf(stderr, "Failed to initialize GLEW\n");
     return -1;
   }
 
-  GLuint vertexArrayID;
-  glGenVertexArrays(1, &vertexArrayID);
-  glBindVertexArray(vertexArrayID);
+  glViewport(0, 0, 720, 480);
 
-  GLfloat glVertexBufferData[] = {-1.0f, -1.0f, 0.0f, 1.0f, -1.0f,
-                                  0.0f,  0.0f,  1.0f, 0.0f};
+  glfwSetWindowSizeCallback(window, framebuffer_size_callback);
 
-  GLuint vertexBuffer;
-  glGenBuffers(1, &vertexBuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(glVertexBufferData), glVertexBufferData,
+  const char *vertexShaderSource =
+      "#version 330 core\n"
+      "layout (location = 0) in vec3 aPos;\n"
+      "void main()\n"
+      "{\n"
+      " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+      "}\0";
+
+  const char *fragmentShaderSource =
+      "#version 330 core\n"
+      "out vec4 FragColor;\n"
+      "void main()\n"
+      "{\n"
+      " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+      "}\0";
+
+  GLuint shaderProgram =
+      programCreator::createProgram(vertexShaderSource, fragmentShaderSource);
+
+  // VERTEX ARRAY
+  GLuint vertexArrayObject;
+  glGenVertexArrays(1, &vertexArrayObject);
+  glBindVertexArray(vertexArrayObject);
+
+  // VERTEX BUFFER
+  GLfloat verteces[] = {0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
+                        -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f};
+  GLuint vertexBufferObject;
+  glGenBuffers(1, &vertexBufferObject);
+  glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(verteces), verteces, GL_STATIC_DRAW);
+
+  // ELEMENT BUFFER
+  GLuint indeces[] = {0, 1, 3, 1, 2, 3};
+
+  unsigned int elementBufferObject;
+  glGenBuffers(1, &elementBufferObject);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indeces), indeces,
                GL_STATIC_DRAW);
 
+  // VERTEX ATTRIBUTES
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
+                        (const void *)0);
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)0);
-
-  GLuint programID =
-      LoadShaders("../src/shaders/Vertex.glsl", "../src/shaders/Fragment.glsl");
 
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(programID);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glUseProgram(shaderProgram);
+
+    glBindVertexArray(vertexArrayObject);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
+    glfwPollEvents();
   } while (glfwWindowShouldClose(window) == 0);
+
+  glfwTerminate();
+  return 0;
 }
