@@ -13,8 +13,8 @@ shaderProgramLinker::ShaderProgramLinker::getInstance() {
   return shaderProgramLinker::ShaderProgramLinker::instance;
 }
 
-void shaderProgramLinker::ShaderProgramLinker::linkProgram(shader::ShaderProgram* program, std::vector<shader::Shader>& shaders) {
-  for (shader::Shader& cShader : shaders)
+void shaderProgramLinker::ShaderProgramLinker::linkProgram(shader::ShaderProgram* program) {
+  for (shader::Shader& cShader : program->shaders)
   {
       glAttachShader(program->getProgramID(), cShader.getShaderID());
   }

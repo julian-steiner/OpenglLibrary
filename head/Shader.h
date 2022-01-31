@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Initializable.h"
 #include "PCH.h"
 #include <memory>
 
@@ -8,7 +9,7 @@ namespace shaderCompiler {
 }
 
 namespace shader {
-class Shader {
+class Shader : Initializable{
 friend shaderCompiler::ShaderCompiler;
 
 protected:
@@ -18,6 +19,7 @@ protected:
 
 protected:
   void compile();
+  void initialize() override;
 
 public:
   Shader(GLenum shaderType, const char* sourceCode) : shaderType(shaderType), sourceCode(sourceCode){};

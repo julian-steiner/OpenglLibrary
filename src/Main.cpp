@@ -53,11 +53,13 @@ int main() {
       " FragColor = vec4(0.25f, 0.41f, 0.88f, 1.0f);\n"
       "}\0";
 
-  std::vector<shader::Shader> shaders = std::vector<shader::Shader>();
-  shaders.push_back(shader::VertexShader(vertexShaderSourceCode));
-  shaders.push_back(shader::FragmentShader(fragmentShaderSourceCode));
+  shader::VertexShader vertexShader = shader::VertexShader(vertexShaderSourceCode);
+  shader::FragmentShader fragmentShader = shader::FragmentShader(fragmentShaderSourceCode);
 
-  shader::ShaderProgram shaderProgram = shader::ShaderProgram(shaders);
+  shader::ShaderProgram shaderProgram;
+  shaderProgram.addShader(vertexShader);
+  shaderProgram.addShader(fragmentShader);
+  // shaderProgram.linkProgram();
 
   // VERTEX ARRAY
   GLuint vertexArrayObject;

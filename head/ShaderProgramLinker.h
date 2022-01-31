@@ -16,6 +16,6 @@ private:
 public:
   static std::shared_ptr<ShaderProgramLinker> getInstance();
 
-  void linkProgram(shader::ShaderProgram* program, std::vector<shader::Shader>& shaders);
+  void linkProgram(shader::ShaderProgram* program);
 };
 } // namespace shaderProgramLinker
