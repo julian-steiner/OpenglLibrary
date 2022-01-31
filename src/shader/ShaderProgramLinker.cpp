@@ -1,5 +1,5 @@
-#include "ShaderProgramLinker.h"
-#include "Shader.h"
+#include "shader/ShaderProgramLinker.h"
+#include "shader/Shader.h"
 #include <memory>
 
 std::shared_ptr<shaderProgramLinker::ShaderProgramLinker>

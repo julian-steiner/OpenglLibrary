@@ -1,8 +1,8 @@
 #pragma once
 
 #include "PCH.h"
-#include "Shader.h"
-#include "ShaderProgram.h"
+#include "shader/Shader.h"
+#include "shader/ShaderProgram.h"
 #include <cstddef>
 #include <memory>
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PCH.h"
-#include "Shader.h"
+#include "shader/Shader.h"
 #include <memory>
 
 namespace shaderCompiler {

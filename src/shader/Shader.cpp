@@ -1,5 +1,5 @@
-#include "Shader.h"
-#include "ShaderCompiler.h"
+#include "shader/Shader.h"
+#include "shader/ShaderCompiler.h"
 
 GLuint shader::Shader::getShaderID() { return this->id; }
 

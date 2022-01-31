@@ -1,7 +1,7 @@
-#include "FragmentShader.h"
-#include "Shader.h"
-#include "ShaderProgram.h"
-#include "VertexShader.h"
+#include "shader/FragmentShader.h"
+#include "shader/Shader.h"
+#include "shader/ShaderProgram.h"
+#include "shader/VertexShader.h"
 #include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -53,13 +53,14 @@ int main() {
       " FragColor = vec4(0.25f, 0.41f, 0.88f, 1.0f);\n"
       "}\0";
 
-  shader::VertexShader vertexShader = shader::VertexShader(vertexShaderSourceCode);
-  shader::FragmentShader fragmentShader = shader::FragmentShader(fragmentShaderSourceCode);
+  shader::VertexShader vertexShader =
+      shader::VertexShader(vertexShaderSourceCode);
+  shader::FragmentShader fragmentShader =
+      shader::FragmentShader(fragmentShaderSourceCode);
 
   shader::ShaderProgram shaderProgram;
   shaderProgram.addShader(vertexShader);
   shaderProgram.addShader(fragmentShader);
-  // shaderProgram.linkProgram();
 
   // VERTEX ARRAY
   GLuint vertexArrayObject;

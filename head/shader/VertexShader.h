@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Shader.h"
-#include "ShaderCompiler.h"
+#include "shader/Shader.h"
+#include "shader/ShaderCompiler.h"
 
 namespace shader {
 class VertexShader : public shader::Shader {

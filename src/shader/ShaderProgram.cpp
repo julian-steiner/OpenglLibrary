@@ -1,6 +1,6 @@
-#include "ShaderProgram.h"
-#include "Shader.h"
-#include "ShaderProgramLinker.h"
+#include "shader/ShaderProgram.h"
+#include "shader/Shader.h"
+#include "shader/ShaderProgramLinker.h"
 #include <vector>
 
 shader::ShaderProgram::ShaderProgram() {
