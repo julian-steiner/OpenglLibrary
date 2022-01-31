@@ -1,14 +1,20 @@
 #include "ShaderProgram.h"
+#include "Shader.h"
 #include "ShaderProgramLinker.h"
+#include <vector>
 
-shader::ShaderProgram shader::ShaderProgram::fromShaders(std::vector<shader::Shader> &shaders)
+shader::ShaderProgram::ShaderProgram(std::vector<shader::Shader>& shaders)
 {
-    shader::ShaderProgram program;
-    program.id = shaderProgramLinker::ShaderProgramLinker::getInstance()->linkProgram(shaders);
-    return program;
+    this->id = glCreateProgram();
+    shaderProgramLinker::ShaderProgramLinker::getInstance()->linkProgram(this, shaders);
 }
 
 GLuint shader::ShaderProgram::getProgramID()
 {
     return this->id;
+}
+
+void shader::ShaderProgram::use()
+{
+    glUseProgram(this->id);
 }

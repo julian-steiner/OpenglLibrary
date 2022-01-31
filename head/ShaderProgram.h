@@ -2,18 +2,22 @@
 
 #include "PCH.h"
 #include "Shader.h"
-#include "ShaderProgramLinker.h"
+
+namespace shaderProgramLinker
+{
+  class ShaderProgramLinker;
+}
 
 namespace shader {
 class ShaderProgram {
+friend class shaderProgramLinker::ShaderProgramLinker;
+
 private:
-  ShaderProgram() = default;
   int id = 0;
 
 public:
-  static ShaderProgram fromShaders(std::vector<shader::Shader>& shaders);
-  static ShaderProgram fromSourceCodes(const char *vertexShaderSource,
-                                       const char *fragmentShaderSource);
+  ShaderProgram(std::vector<shader::Shader> &shaders);
   GLuint getProgramID();
+  void use();
 };
 } // namespace shader

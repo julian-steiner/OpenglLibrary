@@ -6,7 +6,6 @@
 namespace shader {
 class VertexShader : public shader::Shader {
 public:
-  VertexShader() = default;
   VertexShader(const char *sourceCode);
 };
 } // namespace shader

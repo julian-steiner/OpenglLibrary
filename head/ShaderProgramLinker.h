@@ -2,6 +2,7 @@
 
 #include "PCH.h"
 #include "Shader.h"
+#include "ShaderProgram.h"
 #include <cstddef>
 #include <memory>
 
@@ -15,8 +16,6 @@ private:
 public:
   static std::shared_ptr<ShaderProgramLinker> getInstance();
 
-  //   GLuint linkProgram(shader::Shader vertexShader, shader::Shader
-  //   fragmentShader);
-  GLuint linkProgram(std::vector<shader::Shader>& shaders);
+  void linkProgram(shader::ShaderProgram* program, std::vector<shader::Shader>& shaders);
 };
 } // namespace shaderProgramLinker

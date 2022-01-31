@@ -1,7 +1,7 @@
 #include "VertexShader.h"
+#include "Shader.h"
 #include "ShaderCompiler.h"
 
-shader::VertexShader::VertexShader(const char *sourceCode) {
-  this->id = shaderCompiler::ShaderCompiler::getInstance()
-                 ->compileShader<GL_VERTEX_SHADER>(sourceCode);
+shader::VertexShader::VertexShader(const char *sourceCode) : shader::Shader(GL_VERTEX_SHADER, sourceCode) {
+  compile();
 }

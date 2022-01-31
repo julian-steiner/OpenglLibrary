@@ -1,23 +1,29 @@
 #pragma once
 
 #include "PCH.h"
-#include "ShaderCompiler.h"
-#include "ShaderSource.h"
 #include <memory>
+
+namespace shaderCompiler {
+  class ShaderCompiler;
+}
 
 namespace shader {
 class Shader {
+friend shaderCompiler::ShaderCompiler;
+
 protected:
-  int success;
-  GLenum shaderType = 0;
-  char infoLog[512];
   const char *sourceCode;
   GLuint id;
+  const GLenum shaderType;
+
+protected:
+  void compile();
 
 public:
-  Shader() = default;
-  Shader(const shader::ShaderSource& sourceCode);
+  Shader(GLenum shaderType, const char* sourceCode) : shaderType(shaderType), sourceCode(sourceCode){};
   GLuint getShaderID();
+  GLenum getShaderType() const;
+  const char* getSourceCode() const;
   void deleteShader();
 };
 } // namespace shader

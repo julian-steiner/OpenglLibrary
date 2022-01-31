@@ -1,7 +1,7 @@
 #include "FragmentShader.h"
+#include "Shader.h"
 #include "ShaderCompiler.h"
 
-shader::FragmentShader::FragmentShader(const char *sourceCode) {
-  this->id = shaderCompiler::ShaderCompiler::getInstance()
-                 ->compileShader<GL_FRAGMENT_SHADER>(sourceCode);
+shader::FragmentShader::FragmentShader(const char *sourceCode) : shader::Shader(GL_FRAGMENT_SHADER, sourceCode){
+  compile();
 }

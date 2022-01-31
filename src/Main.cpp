@@ -1,10 +1,7 @@
 #include "FragmentShader.h"
-#include "FragmentShaderSource.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
-#include "ShaderSource.h"
 #include "VertexShader.h"
-#include "VertexShaderSource.h"
 #include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -56,14 +53,11 @@ int main() {
       " FragColor = vec4(0.25f, 0.41f, 0.88f, 1.0f);\n"
       "}\0";
 
-  shader::ShaderSource vertexSource = shader::VertexShaderSource(vertexShaderSourceCode);
-  shader::ShaderSource fragmentSource = shader::FragmentShaderSource(fragmentShaderSourceCode);
-
   std::vector<shader::Shader> shaders = std::vector<shader::Shader>();
-  shaders.push_back(shader::Shader(vertexSource));
-  shaders.push_back(shader::Shader(fragmentSource));
+  shaders.push_back(shader::VertexShader(vertexShaderSourceCode));
+  shaders.push_back(shader::FragmentShader(fragmentShaderSourceCode));
 
-  shader::ShaderProgram shaderProgram = shader::ShaderProgram::fromShaders(shaders);
+  shader::ShaderProgram shaderProgram = shader::ShaderProgram(shaders);
 
   // VERTEX ARRAY
   GLuint vertexArrayObject;
@@ -95,7 +89,7 @@ int main() {
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram.getProgramID());
+    shaderProgram.use();
 
     glBindVertexArray(vertexArrayObject);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

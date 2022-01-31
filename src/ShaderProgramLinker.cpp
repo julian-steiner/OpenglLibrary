@@ -13,38 +13,17 @@ shaderProgramLinker::ShaderProgramLinker::getInstance() {
   return shaderProgramLinker::ShaderProgramLinker::instance;
 }
 
-// GLuint shaderProgramLinker::ShaderProgramLinker::linkProgram(shader::Shader vertexShader, shader::Shader fragmentShader) {
-//   GLuint shaderProgram = glCreateProgram();
-//   glAttachShader(shaderProgram, vertexShader.getShaderID());
-//   glAttachShader(shaderProgram, fragmentShader.getShaderID());
-//   glLinkProgram(shaderProgram);
-
-//   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-//   if (!success) {
-//     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-//     std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n"
-//               << infoLog << "\n";
-//   }
-
-//   return shaderProgram;
-// }
-
-GLuint shaderProgramLinker::ShaderProgramLinker::linkProgram(std::vector<shader::Shader>& shaders) {
-  GLuint shaderProgram = glCreateProgram();
+void shaderProgramLinker::ShaderProgramLinker::linkProgram(shader::ShaderProgram* program, std::vector<shader::Shader>& shaders) {
   for (shader::Shader& cShader : shaders)
   {
-      glAttachShader(shaderProgram, cShader.getShaderID());
+      glAttachShader(program->getProgramID(), cShader.getShaderID());
   }
-//   glAttachShader(shaderProgram, vertexShader.getShaderID());
-//   glAttachShader(shaderProgram, fragmentShader.getShaderID());
-  glLinkProgram(shaderProgram);
+  glLinkProgram(program->getProgramID());
 
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  glGetProgramiv(program->getProgramID(), GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+    glGetProgramInfoLog(program->getProgramID(), 512, NULL, infoLog);
     std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n"
               << infoLog << "\n";
   }
-
-  return shaderProgram;
 }

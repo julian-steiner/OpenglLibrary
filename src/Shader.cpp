@@ -1,12 +1,16 @@
 #include "Shader.h"
 #include "ShaderCompiler.h"
-#include "ShaderSource.h"
-
-shader::Shader::Shader(const shader::ShaderSource& sourceCode)
-{
-    this->id = shaderCompiler::ShaderCompiler::getInstance()->compileShader(sourceCode);
-}
 
 GLuint shader::Shader::getShaderID() { return this->id; }
 
+GLenum shader::Shader::getShaderType() const { return this->shaderType; }
+
+const char* shader::Shader::getSourceCode() const { return this->sourceCode; }
+
 void shader::Shader::deleteShader() { glDeleteShader(this->getShaderID()); }
+
+void shader::Shader::compile()
+{
+    shaderCompiler::ShaderCompiler::getInstance()->compileShader(this);
+}
+
