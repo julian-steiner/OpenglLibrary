@@ -2,6 +2,8 @@
 
 #include "PCH.h"
 #include "ShaderCompiler.h"
+#include "ShaderSource.h"
+#include <memory>
 
 namespace shader {
 class Shader {
@@ -11,10 +13,10 @@ protected:
   char infoLog[512];
   const char *sourceCode;
   GLuint id;
-  shaderCompiler::ShaderCompiler compiler;
 
 public:
   Shader() = default;
+  Shader(const shader::ShaderSource& sourceCode);
   GLuint getShaderID();
   void deleteShader();
 };

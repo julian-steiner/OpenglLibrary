@@ -1,4 +1,11 @@
-#include "ProgramCreator.h"
+#include "FragmentShader.h"
+#include "FragmentShaderSource.h"
+#include "Shader.h"
+#include "ShaderProgram.h"
+#include "ShaderSource.h"
+#include "VertexShader.h"
+#include "VertexShaderSource.h"
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -33,7 +40,7 @@ int main() {
 
   glfwSetWindowSizeCallback(window, framebuffer_size_callback);
 
-  const char *vertexShaderSource =
+  const char *vertexShaderSourceCode =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
       "void main()\n"
@@ -41,16 +48,22 @@ int main() {
       " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
       "}\0";
 
-  const char *fragmentShaderSource =
+  const char *fragmentShaderSourceCode =
       "#version 330 core\n"
       "out vec4 FragColor;\n"
       "void main()\n"
       "{\n"
-      " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+      " FragColor = vec4(0.25f, 0.41f, 0.88f, 1.0f);\n"
       "}\0";
 
-  GLuint shaderProgram =
-      programCreator::createProgram(vertexShaderSource, fragmentShaderSource);
+  shader::ShaderSource vertexSource = shader::VertexShaderSource(vertexShaderSourceCode);
+  shader::ShaderSource fragmentSource = shader::FragmentShaderSource(fragmentShaderSourceCode);
+
+  std::vector<shader::Shader> shaders = std::vector<shader::Shader>();
+  shaders.push_back(shader::Shader(vertexSource));
+  shaders.push_back(shader::Shader(fragmentSource));
+
+  shader::ShaderProgram shaderProgram = shader::ShaderProgram::fromShaders(shaders);
 
   // VERTEX ARRAY
   GLuint vertexArrayObject;
@@ -82,7 +95,7 @@ int main() {
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram);
+    glUseProgram(shaderProgram.getProgramID());
 
     glBindVertexArray(vertexArrayObject);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

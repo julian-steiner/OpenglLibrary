@@ -8,7 +8,7 @@ find_package(glfw3 REQUIRED)
 
 include_directories(lib/glew/include ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} head)
 
-add_executable(${PROJECT_NAME} src/Main.cpp src/ProgramCreator.cpp src/Shader.cpp src/VertexShader.cpp src/FragmentShader.cpp)
+add_executable(${PROJECT_NAME} src/Main.cpp src/ProgramCreator.cpp src/Shader.cpp src/VertexShader.cpp src/FragmentShader.cpp src/ShaderCompiler.cpp src/ShaderProgramLinker.cpp src/ShaderProgram.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} glfw)
 target_precompile_headers(${PROJECT_NAME} PUBLIC head/PCH.h)
