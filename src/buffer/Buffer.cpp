@@ -41,7 +41,6 @@ void buffer::Buffer::setLayout() {
   for (unsigned int i = 0; i < attributes.size(); i++) {
     const buffer::BufferAttribute &attribute = attributes.at(i);
     GLuint attrID = bufferHandler::BufferHandler::getInstance()->generateVertexAttribPointerID();
-    std::cout << attrID << "\n";
     glVertexAttribPointer(attrID, attribute.getSize(), attribute.getType(), GL_FALSE,
                           stride, reinterpret_cast<const void *>(offset));
     glEnableVertexAttribArray(attrID);

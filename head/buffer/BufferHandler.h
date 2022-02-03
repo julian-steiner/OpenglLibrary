@@ -15,6 +15,7 @@ public:
   static std::shared_ptr<BufferHandler> getInstance();
   int getBoundVertexArrayObject();
   GLuint generateVertexAttribPointerID();
+  GLuint registerVertexArrayObject();
   void setBoundVertexArrayObject(int id);
 };
 } // namespace bufferHandler

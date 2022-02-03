@@ -9,6 +9,7 @@ namespace vertexArrayObject
     {
         private:
             GLuint id;
+            GLuint handlerID;
         public:
             VertexArrayObject();
             void addBuffer(buffer::Buffer buffer);

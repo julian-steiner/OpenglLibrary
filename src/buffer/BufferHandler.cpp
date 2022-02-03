@@ -21,13 +21,12 @@ GLuint bufferHandler::BufferHandler::generateVertexAttribPointerID() {
   return id;
 }
 
-void bufferHandler::BufferHandler::setBoundVertexArrayObject(int id) {
-  if (this->vertexArrayObjectList.size() < id) {
-    for (int i = 0; i < id - this->vertexArrayObjectList.size() + 2; i++) {
-      this->vertexArrayObjectList.push_back(0);
-      std::cout << "ADDED TO THE ARRAY" << std::endl;
-    }
-  }
+GLuint bufferHandler::BufferHandler::registerVertexArrayObject()
+{
+  this->vertexArrayObjectList.push_back(0);
+  return this->vertexArrayObjectList.size() - 1;
+}
 
+void bufferHandler::BufferHandler::setBoundVertexArrayObject(int id) {
   this->boundVertexArrayObject = id;
 }

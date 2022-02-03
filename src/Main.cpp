@@ -105,7 +105,6 @@ int main() {
   vertexArrayObject::VertexArrayObject vao = vertexArrayObject::VertexArrayObject();
   vao.addBuffer(vertexBuffer);
   vao.addBuffer(colorBuffer);
-  // vao.addBuffer(indexBuffer);
 
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
