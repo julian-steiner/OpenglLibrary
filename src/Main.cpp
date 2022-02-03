@@ -5,6 +5,7 @@
 #include "shader/Shader.h"
 #include "shader/ShaderProgram.h"
 #include "shader/VertexShader.h"
+#include "vertexArrayObject/VertexArrayObject.h"
 #include <array>
 #include <vector>
 
@@ -44,17 +45,21 @@ int main() {
   const char *vertexShaderSourceCode =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
+      "layout (location = 1) in vec3 color;\n"
+      "out vec4 vertexcolor;"
       "void main()\n"
       "{\n"
+      " vertexcolor = vec4(color.x, color.y, color.z, 1.0);\n"
       " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
       "}\0";
 
   const char *fragmentShaderSourceCode =
       "#version 330 core\n"
       "out vec4 FragColor;\n"
+      "in vec4 vertexcolor;"
       "void main()\n"
       "{\n"
-      " FragColor = vec4(0.25f, 0.41f, 0.88f, 1.0f);\n"
+      " FragColor = vertexcolor;\n"
       "}\0";
 
   shader::VertexShader vertexShader =
@@ -72,14 +77,15 @@ int main() {
   glBindVertexArray(vertexArrayObject);
 
   // VERTEX BUFFER
-  std::array<float, 12> verteces = {0.5f,  0.5f,  0.0f,
-                                    0.5f,  -0.5f, 0.0f,
-                                    -0.5f, -0.5f, 0.0f,
-                                    -0.5f, 0.5f,  0.0f};
+  std::array<float, 24> verteces = {0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f,
+                                    0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
+                                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+                                    -0.5f, 0.5f,  0.0f, 0.0f, 0.0f, 0.0f};
 
   buffer::VertexBuffer vertexBuffer = buffer::VertexBuffer();
   vertexBuffer.loadData(verteces, GL_STATIC_DRAW);
 
+  vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
   vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
 
   // ELEMENT BUFFER
@@ -88,14 +94,16 @@ int main() {
   buffer::IndexBuffer indexBuffer = buffer::IndexBuffer();
   indexBuffer.loadData(indeces, GL_STATIC_DRAW);
 
+  vertexArrayObject::VertexArrayObject vao = vertexArrayObject::VertexArrayObject();
+  vao.addBuffer(vertexBuffer);
+  vao.addBuffer(indexBuffer);
+
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.bind();
 
-    // glBindVertexArray(vertexArrayObject);
-    vertexBuffer.bind();
-    indexBuffer.bind();
+    vao.bind();
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

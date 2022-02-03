@@ -32,15 +32,16 @@ void buffer::Buffer::addAttribute(const buffer::BufferAttribute &attribute) {
 }
 
 void buffer::Buffer::setLayout() {
-  int *offset = 0;
+  int offset = 0;
 
   bindWithoutLoading();
 
   for (unsigned int i = 0; i < attributes.size(); i++) {
     const buffer::BufferAttribute &attribute = attributes.at(i);
     glVertexAttribPointer(i, attribute.getSize(), attribute.getType(), GL_FALSE,
-                          stride, (const void *)offset);
+                          stride, reinterpret_cast<const void *>(offset));
     glEnableVertexAttribArray(i);
-    offset += attribute.getSize() * sizeof(attribute.getType());
+
+    offset += (attribute.getSize() * sizeof(attribute.getType()));
   }
 }
