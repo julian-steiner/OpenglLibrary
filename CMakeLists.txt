@@ -11,11 +11,10 @@ include_directories(lib/glew/include ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} 
 set(Source 
     src/Main.cpp
     src/shader/Shader.cpp
-    src/shader/FragmentShader.cpp
-    src/shader/VertexShader.cpp
     src/shader/ShaderCompiler.cpp
     src/shader/ShaderProgram.cpp
-    src/shader/ShaderProgramLinker.cpp)
+    src/shader/ShaderProgramLinker.cpp
+    src/buffer/Buffer.cpp)
 
 add_executable(${PROJECT_NAME} ${Source})
 

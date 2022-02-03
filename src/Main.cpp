@@ -1,7 +1,11 @@
+#include "buffer/BufferAttribute.h"
+#include "buffer/IndexBuffer.h"
+#include "buffer/VertexBuffer.h"
 #include "shader/FragmentShader.h"
 #include "shader/Shader.h"
 #include "shader/ShaderProgram.h"
 #include "shader/VertexShader.h"
+#include <array>
 #include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -68,33 +72,31 @@ int main() {
   glBindVertexArray(vertexArrayObject);
 
   // VERTEX BUFFER
-  GLfloat verteces[] = {0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
-                        -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f};
-  GLuint vertexBufferObject;
-  glGenBuffers(1, &vertexBufferObject);
-  glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(verteces), verteces, GL_STATIC_DRAW);
+  std::array<float, 12> verteces = {0.5f,  0.5f,  0.0f,
+                                    0.5f,  -0.5f, 0.0f,
+                                    -0.5f, -0.5f, 0.0f,
+                                    -0.5f, 0.5f,  0.0f};
+
+  buffer::VertexBuffer vertexBuffer = buffer::VertexBuffer();
+  vertexBuffer.loadData(verteces, GL_STATIC_DRAW);
+
+  vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
 
   // ELEMENT BUFFER
-  GLuint indeces[] = {0, 1, 3, 1, 2, 3};
+  std::array<unsigned int, 6> indeces = {0, 1, 3, 1, 2, 3};
 
-  unsigned int elementBufferObject;
-  glGenBuffers(1, &elementBufferObject);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indeces), indeces,
-               GL_STATIC_DRAW);
-
-  // VERTEX ATTRIBUTES
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
-                        (const void *)0);
-  glEnableVertexAttribArray(0);
+  buffer::IndexBuffer indexBuffer = buffer::IndexBuffer();
+  indexBuffer.loadData(indeces, GL_STATIC_DRAW);
 
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    shaderProgram.use();
+    shaderProgram.bind();
 
-    glBindVertexArray(vertexArrayObject);
+    // glBindVertexArray(vertexArrayObject);
+    vertexBuffer.bind();
+    indexBuffer.bind();
+
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);

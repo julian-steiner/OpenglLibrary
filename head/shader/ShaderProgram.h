@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Bindable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include "shader/Shader.h"
@@ -10,7 +11,7 @@ namespace shaderProgramLinker
 }
 
 namespace shader {
-class ShaderProgram : Initializable{
+class ShaderProgram : Initializable, Bindable{
 friend class shaderProgramLinker::ShaderProgramLinker;
 
 private:
@@ -23,6 +24,7 @@ public:
   ShaderProgram();
   void addShader(const shader::Shader& shader);
   GLuint getProgramID();
-  void use();
+  void bind() override;
+  void unbind() override;
 };
 } // namespace shader

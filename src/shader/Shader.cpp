@@ -1,7 +1,7 @@
 #include "shader/Shader.h"
 #include "shader/ShaderCompiler.h"
 
-GLuint shader::Shader::getShaderID() { return this->id; }
+GLuint shader::Shader::getShaderID() const { return this->id; }
 
 GLenum shader::Shader::getShaderType() const { return this->shaderType; }
 

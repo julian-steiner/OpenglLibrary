@@ -16,6 +16,6 @@ private:
 public:
   static std::shared_ptr<ShaderCompiler> getInstance();
 
-  void compileShader(shader::Shader *shader);
+  void compileShader(shader::Shader* shader);
 };
 } // namespace shaderCompiler

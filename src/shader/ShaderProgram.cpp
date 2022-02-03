@@ -10,9 +10,13 @@ shader::ShaderProgram::ShaderProgram() {
 
 GLuint shader::ShaderProgram::getProgramID() { return this->id; }
 
-void shader::ShaderProgram::use() {
+void shader::ShaderProgram::bind() {
   initialize();
   glUseProgram(this->id);
+}
+
+void shader::ShaderProgram::unbind() {
+  glUseProgram(0);
 }
 
 void shader::ShaderProgram::addShader(const shader::Shader &shader) {

@@ -22,8 +22,8 @@ protected:
   void initialize() override;
 
 public:
-  Shader(GLenum shaderType, const char* sourceCode) : shaderType(shaderType), sourceCode(sourceCode){};
-  GLuint getShaderID();
+  Shader(GLenum shaderType, const char* sourceCode) : shaderType(shaderType), sourceCode(sourceCode) {compile();};
+  GLuint getShaderID() const;
   GLenum getShaderType() const;
   const char* getSourceCode() const;
   void deleteShader();
