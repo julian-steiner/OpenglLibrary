@@ -1,5 +1,7 @@
 #include "buffer/Buffer.h"
 #include "buffer/BufferAttribute.h"
+#include "buffer/BufferHandler.h"
+#include <iostream>
 #include <vector>
 
 buffer::Buffer::Buffer(const GLenum &bufferType)
@@ -38,9 +40,11 @@ void buffer::Buffer::setLayout() {
 
   for (unsigned int i = 0; i < attributes.size(); i++) {
     const buffer::BufferAttribute &attribute = attributes.at(i);
-    glVertexAttribPointer(i, attribute.getSize(), attribute.getType(), GL_FALSE,
+    GLuint attrID = bufferHandler::BufferHandler::getInstance()->generateVertexAttribPointerID();
+    std::cout << attrID << "\n";
+    glVertexAttribPointer(attrID, attribute.getSize(), attribute.getType(), GL_FALSE,
                           stride, reinterpret_cast<const void *>(offset));
-    glEnableVertexAttribArray(i);
+    glEnableVertexAttribArray(attrID);
 
     offset += (attribute.getSize() * sizeof(attribute.getType()));
   }

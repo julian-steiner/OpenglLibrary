@@ -15,7 +15,8 @@ set(Source
     src/shader/ShaderProgram.cpp
     src/shader/ShaderProgramLinker.cpp
     src/buffer/Buffer.cpp
-    src/vertexArrayObject/VertexArrayObject.cpp)
+    src/vertexArrayObject/VertexArrayObject.cpp
+    src/buffer/BufferHandler.cpp)
 
 add_executable(${PROJECT_NAME} ${Source})
 

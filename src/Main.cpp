@@ -45,21 +45,21 @@ int main() {
   const char *vertexShaderSourceCode =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
-      "layout (location = 1) in vec3 color;\n"
-      "out vec4 vertexcolor;"
+      "layout (location = 1) in vec3 color;"
+      "out vec4 vertexColor;"
       "void main()\n"
       "{\n"
-      " vertexcolor = vec4(color.x, color.y, color.z, 1.0);\n"
+      " vertexColor = vec4(color, 1.0);"
       " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
       "}\0";
 
   const char *fragmentShaderSourceCode =
       "#version 330 core\n"
       "out vec4 FragColor;\n"
-      "in vec4 vertexcolor;"
+      "in vec4 vertexColor;"
       "void main()\n"
       "{\n"
-      " FragColor = vertexcolor;\n"
+      " FragColor = vertexColor;\n"
       "}\0";
 
   shader::VertexShader vertexShader =
@@ -77,16 +77,24 @@ int main() {
   glBindVertexArray(vertexArrayObject);
 
   // VERTEX BUFFER
-  std::array<float, 24> verteces = {0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f,
-                                    0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
-                                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-                                    -0.5f, 0.5f,  0.0f, 0.0f, 0.0f, 0.0f};
+  std::array<float, 12> verteces = {0.5f,  0.5f,  0.0f,
+                                    0.5f,  -0.5f, 0.0f,
+                                    -0.5f, -0.5f, 0.0f,
+                                    -0.5f, 0.5f,  0.0f};
+
+  std::array<float, 12> colors = {0.0f,  1.0f,  0.0f,
+                                    0.0f,  0.0f, 0.0f,
+                                    0.0f, 0.0f, 1.0f,
+                                    0.0f, 0.0f,  0.0f};
 
   buffer::VertexBuffer vertexBuffer = buffer::VertexBuffer();
   vertexBuffer.loadData(verteces, GL_STATIC_DRAW);
 
+  buffer::VertexBuffer colorBuffer = buffer::VertexBuffer();
+  colorBuffer.loadData(colors, GL_STATIC_DRAW);
+
   vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
-  vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
+  colorBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
 
   // ELEMENT BUFFER
   std::array<unsigned int, 6> indeces = {0, 1, 3, 1, 2, 3};
@@ -96,7 +104,8 @@ int main() {
 
   vertexArrayObject::VertexArrayObject vao = vertexArrayObject::VertexArrayObject();
   vao.addBuffer(vertexBuffer);
-  vao.addBuffer(indexBuffer);
+  vao.addBuffer(colorBuffer);
+  // vao.addBuffer(indexBuffer);
 
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -105,7 +114,8 @@ int main() {
 
     vao.bind();
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
     glfwPollEvents();

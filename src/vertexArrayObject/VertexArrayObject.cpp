@@ -1,4 +1,5 @@
 #include "vertexArrayObject/VertexArrayObject.h"
+#include "buffer/BufferHandler.h"
 
 vertexArrayObject::VertexArrayObject::VertexArrayObject()
 {
@@ -13,6 +14,7 @@ void vertexArrayObject::VertexArrayObject::addBuffer(buffer::Buffer buffer){
 
 void vertexArrayObject::VertexArrayObject::bind() {
     glBindVertexArray(this->id);
+    bufferHandler::BufferHandler::getInstance()->setBoundVertexArrayObject(this->id);
 }
 
 void vertexArrayObject::VertexArrayObject::unbind() {
