@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Bindable.h"
+#include "Renderable.h"
 #include "Initializable.h"
 #include "buffer/Buffer.h"
 namespace vertexArrayObject
 {
-    class VertexArrayObject : public Bindable, Initializable
+    class VertexArrayObject : public Renderable, Initializable
     {
         private:
-            GLuint id;
             GLuint handlerID;
         public:
             VertexArrayObject();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Bindable.h"
+#include "Renderable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include "shader/Shader.h"
@@ -12,11 +12,10 @@ class ShaderProgramLinker;
 }
 
 namespace shader {
-class ShaderProgram : Initializable, Bindable {
+class ShaderProgram : Initializable, Renderable {
   friend class shaderProgramLinker::ShaderProgramLinker;
 
 private:
-  int id = 0;
   std::vector<shader::Shader> shaders;
   std::unordered_map<std::string, GLuint> uniformLocationCache;
 
@@ -27,7 +26,6 @@ private:
 public:
   ShaderProgram();
   void addShader(const shader::Shader &shader);
-  GLuint getProgramID();
   void bind() override;
   void unbind() override;
 

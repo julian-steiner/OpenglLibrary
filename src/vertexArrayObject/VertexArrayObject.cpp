@@ -3,7 +3,7 @@
 
 vertexArrayObject::VertexArrayObject::VertexArrayObject()
 {
-    glGenVertexArrays(1, &this->id);
+    glGenVertexArrays(1, &this->rendererID);
     this->handlerID = bufferHandler::BufferHandler::getInstance()->registerVertexArrayObject();
     initialize();
 }
@@ -14,7 +14,7 @@ void vertexArrayObject::VertexArrayObject::addBuffer(buffer::Buffer buffer){
 }
 
 void vertexArrayObject::VertexArrayObject::bind() {
-    glBindVertexArray(this->id);
+    glBindVertexArray(this->getRendererID());
     bufferHandler::BufferHandler::getInstance()->setBoundVertexArrayObject(this->handlerID);
 }
 

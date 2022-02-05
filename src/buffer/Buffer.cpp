@@ -7,7 +7,7 @@
 buffer::Buffer::Buffer(const GLenum &bufferType)
     : bufferType(bufferType), stride(0),
       attributes(std::vector<buffer::BufferAttribute>()) {
-  glGenBuffers(1, &this->id);
+  glGenBuffers(1, &this->rendererID);
 }
 
 void buffer::Buffer::initialize() {
@@ -18,12 +18,12 @@ void buffer::Buffer::initialize() {
 }
 
 void buffer::Buffer::bindWithoutLoading() {
-  glBindBuffer(this->bufferType, this->id);
+  glBindBuffer(this->bufferType, this->rendererID);
 }
 
 void buffer::Buffer::bind() {
   initialize();
-  glBindBuffer(this->bufferType, this->id);
+  glBindBuffer(this->bufferType, this->rendererID);
 }
 
 void buffer::Buffer::unbind() { glBindBuffer(this->bufferType, 0); }

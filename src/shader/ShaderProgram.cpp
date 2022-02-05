@@ -6,15 +6,13 @@
 #include <vector>
 
 shader::ShaderProgram::ShaderProgram() {
-  this->id = glCreateProgram();
+  this->rendererID = glCreateProgram();
   this->shaders = std::vector<shader::Shader>();
 }
 
-GLuint shader::ShaderProgram::getProgramID() { return this->id; }
-
 void shader::ShaderProgram::bind() {
   initialize();
-  glUseProgram(this->id);
+  glUseProgram(this->rendererID);
 }
 
 void shader::ShaderProgram::unbind() { glUseProgram(0); }
@@ -41,7 +39,7 @@ GLint shader::ShaderProgram::getUniformLocation(const std::string &name) {
       this->uniformLocationCache.end()) {
     return this->uniformLocationCache[name];
   }
-  GLint location = glGetUniformLocation(getProgramID(), name.c_str());
+  GLint location = glGetUniformLocation(getRendererID(), name.c_str());
   if (location != -1) {
     this->uniformLocationCache.insert(
         std::pair<std::string, GLuint>(name, location));
@@ -77,44 +75,44 @@ void shader::ShaderProgram::setUniform4f(const std::string &name,
 
 void shader::ShaderProgram::setUniform1i(const std::string &name,
                                          const int &value) {
-  glUniform1f(getUniformLocation(name), value);
+  glUniform1i(getUniformLocation(name), value);
 }
 
 void shader::ShaderProgram::setUniform2i(const std::string &name,
                                          const int &value, const int &value2) {
-  glUniform2f(getUniformLocation(name), value, value2);
+  glUniform2i(getUniformLocation(name), value, value2);
 }
 
 void shader::ShaderProgram::setUniform3i(const std::string &name,
                                          const int &value, const int &value2,
                                          const int &value3) {
-  glUniform3f(getUniformLocation(name), value, value2, value3);
+  glUniform3i(getUniformLocation(name), value, value2, value3);
 }
 
 void shader::ShaderProgram::setUniform4i(const std::string &name,
                                          const int &value, const int &value2,
                                          const int &value3, const int &value4) {
-  glUniform4f(getUniformLocation(name), value, value2, value3, value4);
+  glUniform4i(getUniformLocation(name), value, value2, value3, value4);
 }
 
 void shader::ShaderProgram::setUniform1ui(const std::string &name,
                                          const unsigned int &value) {
-  glUniform1f(getUniformLocation(name), value);
+  glUniform1ui(getUniformLocation(name), value);
 }
 
 void shader::ShaderProgram::setUniform2ui(const std::string &name,
                                          const unsigned int &value, const unsigned int &value2) {
-  glUniform2f(getUniformLocation(name), value, value2);
+  glUniform2ui(getUniformLocation(name), value, value2);
 }
 
 void shader::ShaderProgram::setUniform3ui(const std::string &name,
                                          const unsigned int &value, const unsigned int &value2,
                                          const unsigned int &value3) {
-  glUniform3f(getUniformLocation(name), value, value2, value3);
+  glUniform3ui(getUniformLocation(name), value, value2, value3);
 }
 
 void shader::ShaderProgram::setUniform4ui(const std::string &name,
                                          const unsigned int &value, const unsigned int &value2,
                                          const unsigned int &value3, const unsigned int &value4) {
-  glUniform4f(getUniformLocation(name), value, value2, value3, value4);
+  glUniform4ui(getUniformLocation(name), value, value2, value3, value4);
 }

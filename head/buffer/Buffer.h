@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Bindable.h"
+#include "Renderable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include "buffer/BufferAttribute.h"
@@ -9,9 +9,8 @@
 #include <vector>
 
 namespace buffer {
-class Buffer : public Bindable, Initializable {
+class Buffer : public Renderable, Initializable {
 private:
-  GLuint id;
   GLuint stride;
   GLenum bufferType;
   std::vector<buffer::BufferAttribute> attributes;

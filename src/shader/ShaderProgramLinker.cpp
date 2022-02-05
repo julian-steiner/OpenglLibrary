@@ -16,13 +16,13 @@ shaderProgramLinker::ShaderProgramLinker::getInstance() {
 void shaderProgramLinker::ShaderProgramLinker::linkProgram(shader::ShaderProgram* program) {
   for (shader::Shader& cShader : program->shaders)
   {
-      glAttachShader(program->getProgramID(), cShader.getShaderID());
+      glAttachShader(program->getRendererID(), cShader.getShaderID());
   }
-  glLinkProgram(program->getProgramID());
+  glLinkProgram(program->getRendererID());
 
-  glGetProgramiv(program->getProgramID(), GL_LINK_STATUS, &success);
+  glGetProgramiv(program->getRendererID(), GL_LINK_STATUS, &success);
   if (!success) {
-    glGetProgramInfoLog(program->getProgramID(), 512, NULL, infoLog);
+    glGetProgramInfoLog(program->getRendererID(), 512, NULL, infoLog);
     std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n"
               << infoLog << "\n";
   }
