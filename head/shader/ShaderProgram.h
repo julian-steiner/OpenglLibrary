@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "Bindable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include "shader/Shader.h"
@@ -12,7 +12,7 @@ class ShaderProgramLinker;
 }
 
 namespace shader {
-class ShaderProgram : Initializable, Renderable {
+class ShaderProgram : Initializable, Bindable {
   friend class shaderProgramLinker::ShaderProgramLinker;
 
 private:

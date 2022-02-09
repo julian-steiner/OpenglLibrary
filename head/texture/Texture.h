@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "Bindable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include <string>
@@ -9,7 +9,7 @@
 
 namespace texture
 {
-    class Texture : public Renderable, Initializable
+    class Texture : public Bindable, Initializable
     {
     private:
         int width, height, nrChannels;

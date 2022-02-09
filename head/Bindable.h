@@ -2,7 +2,7 @@
 
 #include "PCH.h"
 
-class Renderable {
+class Bindable {
 protected:
   GLuint rendererID;
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "Bindable.h"
 #include "Initializable.h"
 #include "PCH.h"
 #include "buffer/BufferAttribute.h"
@@ -9,7 +9,7 @@
 #include <vector>
 
 namespace buffer {
-class Buffer : public Renderable, Initializable {
+class Buffer : public Bindable, Initializable {
 private:
   GLuint stride;
   GLenum bufferType;

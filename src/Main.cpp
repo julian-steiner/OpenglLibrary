@@ -1,5 +1,9 @@
+#include "buffer/BufferAttribute.h"
 #include "buffer/IndexBuffer.h"
 #include "buffer/VertexBuffer.h"
+#include "glm/detail/qualifier.hpp"
+#include "glm/ext/vector_float3.hpp"
+#include "glm/ext/vector_float4.hpp"
 #include "shader/FragmentShader.h"
 #include "shader/Shader.h"
 #include "shader/ShaderProgram.h"
@@ -8,6 +12,9 @@
 #include <array>
 #include <vector>
 #include "texture/Texture2D.h"
+#include "glm/vec2.hpp"
+#include "glm/vec3.hpp"
+#include "glm/vec4.hpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -46,27 +53,22 @@ int main() {
   const char *vertexShaderSourceCode =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
-      "layout (location = 1) in vec3 color;\n"
-      "layout (location = 2) in vec2 texCoord;\n"
-      "out vec4 vertexColor;\n"
+      "layout (location = 1) in vec2 texCoord;\n"
       "out vec2 textureCoord;\n"
       "void main()\n"
       "{\n"
       " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
       " textureCoord = texCoord;\n"
-      " vertexColor = vec4(color, 1.0f);\n"
       "}\0";
 
   const char *fragmentShaderSourceCode =
       "#version 330 core\n"
       "out vec4 FragColor;\n"
-      "in vec4 vertexColor;\n"
       "in vec2 textureCoord;\n"
-      "uniform sampler2D texture1;\n"
-      "uniform sampler2D texture2;\n"
+      "uniform sampler2D texture_s;"
       "void main()\n"
       "{\n"
-      " FragColor = mix(texture(texture1, textureCoord), texture(texture2, textureCoord), 0.4);\n"
+      " FragColor = texture(texture_s, textureCoord);\n"
       "}\0";
 
   shader::VertexShader vertexShader =
@@ -78,54 +80,51 @@ int main() {
   shaderProgram.addShader(vertexShader);
   shaderProgram.addShader(fragmentShader);
 
-  // VERTEX ARRAY
-  GLuint vertexArrayObject;
-  glGenVertexArrays(1, &vertexArrayObject);
-  glBindVertexArray(vertexArrayObject);
+  struct Vertex{
+    glm::vec3 position;
+    glm::vec2 texCoord;
+  };
 
-  // VERTEX BUFFER
-  std::array<float, 32> verteces = {0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f,
-                                    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-                                   -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Vertex upRight;
+  upRight.position = glm::vec3(0.5, 0.5, 0.0);
+  upRight.texCoord = glm::vec2(1, 1);
 
-  std::array<float, 8> texCoords = {1.0f, 1.0f,
-                                    1.0f, 0.0f,
-                                    0.0f, 0.0f,
-                                    0.0f, 1.0f};
+  Vertex downRight;
+  downRight.position = glm::vec3(0.5, -0.5, 0.0);
+  downRight.texCoord = glm::vec2(1, 0);
+
+  Vertex upLeft;
+  upLeft.position = glm::vec3(-0.5, 0.5, 0.0);
+  upLeft.texCoord = glm::vec2(0, 1);
+
+  Vertex downLeft;
+  downLeft.position = glm::vec3(-0.5, -0.5, 0.0);
+  downLeft.texCoord = glm::vec2(0, 0);
+
+  std::array<Vertex, 4> verteces = {upRight, downRight, upLeft, downLeft};
 
   buffer::VertexBuffer vertexBuffer = buffer::VertexBuffer();
   vertexBuffer.loadData(verteces, GL_STATIC_DRAW);
   vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
-  vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 3));
+  vertexBuffer.addAttribute(buffer::BufferAttribute(GL_FLOAT, 2));
 
-  buffer::VertexBuffer textureCoords = buffer::VertexBuffer();
-  textureCoords.loadData(texCoords, GL_STATIC_DRAW);
-  textureCoords.addAttribute(buffer::BufferAttribute(GL_FLOAT, 2));
-
-  std::array<unsigned int, 6> elements = {0, 1, 2, 0, 3, 2};
+  std::array<unsigned int, 6> elements = {0, 1, 2, 2, 3, 1};
   buffer::IndexBuffer indexBuffer = buffer::IndexBuffer();
   indexBuffer.loadData(elements, GL_STATIC_DRAW);
 
   // Vertex Array Object
   vertexArrayObject::VertexArrayObject vao = vertexArrayObject::VertexArrayObject();
   vao.addBuffer(vertexBuffer);
-  vao.addBuffer(textureCoords);
   vao.addBuffer(indexBuffer);
 
-  texture::Texture tex = texture::Texture2D("texture.jpg");
-  texture::Texture tex2 = texture::Texture2D("texture2.jpg");
-  tex2.setSlot(1);
+  texture::Texture tex = texture::Texture2D("texture2.jpg");
 
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.bind();
-    shaderProgram.setUniform1i("texture1", 0);
-    shaderProgram.setUniform1i("texture2", 1);
 
     tex.bind();
-    tex2.bind();
   
     vao.bind();
 
