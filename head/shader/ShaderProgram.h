@@ -3,6 +3,7 @@
 #include "Bindable.h"
 #include "Initializable.h"
 #include "PCH.h"
+#include "glm/ext/matrix_float4x4.hpp"
 #include "shader/Shader.h"
 #include <string>
 #include <unordered_map>
@@ -55,5 +56,7 @@ public:
   void setUniform4ui(const std::string &name, const unsigned int &value,
                      const unsigned int &value2, const unsigned int &value3,
                      const unsigned int &value4);
+
+  void setUniformMatrix4x4(const std::string &name, const glm::mat4x4 &value);
 };
 } // namespace shader

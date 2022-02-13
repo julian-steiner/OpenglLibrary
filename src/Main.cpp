@@ -2,12 +2,15 @@
 #include "buffer/IndexBuffer.h"
 #include "buffer/VertexBuffer.h"
 #include "glm/detail/qualifier.hpp"
+#include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/ext/vector_float4.hpp"
+#include "glm/gtx/string_cast.hpp"
 #include "shader/FragmentShader.h"
 #include "shader/Shader.h"
 #include "shader/ShaderProgram.h"
 #include "shader/VertexShader.h"
+#include "transform/Transform.h"
 #include "vertexArrayObject/VertexArrayObject.h"
 #include <array>
 #include <vector>
@@ -15,6 +18,8 @@
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
+#include "glm/matrix.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -55,9 +60,10 @@ int main() {
       "layout (location = 0) in vec3 aPos;\n"
       "layout (location = 1) in vec2 texCoord;\n"
       "out vec2 textureCoord;\n"
+      "uniform mat4 transform;\n"
       "void main()\n"
       "{\n"
-      " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+      " gl_Position = transform * vec4(aPos, 1.0);\n"
       " textureCoord = texCoord;\n"
       "}\0";
 
@@ -119,10 +125,18 @@ int main() {
 
   texture::Texture tex = texture::Texture2D("texture2.jpg");
 
+  // Transformations
+  transform::Transform trans;
+  trans.addScale(glm::vec3(0.5f, 0.5f, 0.0f));
+  trans.addRotation(glm::radians(50.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+  std::cout << glm::to_string(trans.getMatrix()) << std::endl;
+
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.bind();
+    shaderProgram.setUniformMatrix4x4("transform", trans.getMatrix());
 
     tex.bind();
   

@@ -18,7 +18,8 @@ set(Source
     src/buffer/Buffer.cpp
     src/vertexArrayObject/VertexArrayObject.cpp
     src/buffer/BufferHandler.cpp
-    src/texture/Texture.cpp)
+    src/texture/Texture.cpp
+    src/transform/Transform.cpp)
 
 add_executable(${PROJECT_NAME} ${Source})
 

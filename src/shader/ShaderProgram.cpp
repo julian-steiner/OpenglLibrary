@@ -1,4 +1,5 @@
 #include "shader/ShaderProgram.h"
+#include "glm/gtc/type_ptr.hpp"
 #include "shader/Shader.h"
 #include "shader/ShaderProgramLinker.h"
 #include <string>
@@ -115,4 +116,9 @@ void shader::ShaderProgram::setUniform4ui(const std::string &name,
                                          const unsigned int &value, const unsigned int &value2,
                                          const unsigned int &value3, const unsigned int &value4) {
   glUniform4ui(getUniformLocation(name), value, value2, value3, value4);
+}
+
+void shader::ShaderProgram::setUniformMatrix4x4(const std::string &name, const glm::mat4x4 &value)
+{
+  glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
 }
