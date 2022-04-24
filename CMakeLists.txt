@@ -6,6 +6,14 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
+#################################
+# Generate Docs
+#################################
+OPTION(BUILD_WITH_DOCS "Generate Docs" ON)
+IF(TASKSCH_BUILD_WITH_DOCS)
+	ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/docs)
+ENDIF()
+
 include_directories(lib/glew/include ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} head lib/stb_image lib)
 
 set(Source 

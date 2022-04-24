@@ -22,8 +22,24 @@ namespace texture
 
     public:
         Texture(const std::string& filepath, GLenum textureType);
+
+        /**
+         * @brief Binds the texture to its slot
+         * 
+         */
         void bind() override;
+
+        /**
+         * @brief Unbinds the texture
+         * 
+         */
         void unbind() override;
+
+        /**
+         * @brief Set the slot of the texture
+         * 
+         * @param slot 
+         */
         void setSlot(unsigned int slot);
     };
 }

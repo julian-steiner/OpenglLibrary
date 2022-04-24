@@ -22,12 +22,35 @@ private:
 
   void initialize() override;
   void linkProgram();
+
+  /**
+   * @brief Get the location of the given uniform 
+   * 
+   * @param name of the uniform
+   * @return location of the uniform 
+   */
   GLint getUniformLocation(const std::string &name);
 
 public:
   ShaderProgram();
+
+  /**
+   * @brief Add a shader to the program
+   * 
+   * @param shader to add
+   */
   void addShader(const shader::Shader &shader);
+
+  /**
+   * @brief Binds the shader program
+   * 
+   */
   void bind() override;
+
+  /**
+   * @brief Unbinds the shader program
+   * 
+   */
   void unbind() override;
 
   // Uniform setters

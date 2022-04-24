@@ -34,3 +34,7 @@
 build/
 
 .cache/clangd/index/
+
+docs/html/
+
+docs/latex/
