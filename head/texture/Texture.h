@@ -2,7 +2,7 @@
 
 #include "Bindable.h"
 #include "Initializable.h"
-#include "PCH.h"
+#include "PCH.hpp"
 #include <string>
 
 #include "stb_image.h"

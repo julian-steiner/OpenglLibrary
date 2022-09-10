@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PCH.h"
+#include "PCH.hpp"
 #include "shader/Shader.h"
 #include "shader/ShaderProgram.h"
 #include <cstddef>

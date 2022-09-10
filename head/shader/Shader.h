@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Initializable.h"
-#include "PCH.h"
+#include "PCH.hpp"
 #include <memory>
 
 namespace shaderCompiler {

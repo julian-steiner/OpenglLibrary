@@ -2,7 +2,7 @@
 
 #include "Bindable.h"
 #include "Initializable.h"
-#include "PCH.h"
+#include "PCH.hpp"
 #include "glm/ext/matrix_float4x4.hpp"
 #include "shader/Shader.h"
 #include <string>
