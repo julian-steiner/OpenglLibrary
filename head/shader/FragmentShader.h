@@ -6,6 +6,6 @@
 namespace shader {
 class FragmentShader : public shader::Shader {
 public:
-  FragmentShader(const char *sourceCode) : shader::Shader(GL_FRAGMENT_SHADER, sourceCode) {};
+  FragmentShader(const char *filepath) : shader::Shader(GL_FRAGMENT_SHADER, filepath) {};
 };
 } // namespace shader

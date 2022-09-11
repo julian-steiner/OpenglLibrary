@@ -22,7 +22,8 @@ protected:
   void initialize() override;
 
 public:
-  Shader(GLenum shaderType, const char* sourceCode) : shaderType(shaderType), sourceCode(sourceCode) {compile();};
+  Shader(GLenum shaderType, const char* filepath) : shaderType(shaderType), sourceCode(loadSourceCode(filepath)) {compile();};
+  // Shader(GLenum shaderType, const char* filepath) : shaderType(shaderType), sourceCode(filepath) {compile();};
 
   /**
    * @brief Get the renderer ID of the shader
@@ -30,6 +31,8 @@ public:
    * @return the Shader id 
    */
   GLuint getShaderID() const;
+  
+  static const char* loadSourceCode(const char* filepath);
 
   /**
    * @brief Get the type of the shader

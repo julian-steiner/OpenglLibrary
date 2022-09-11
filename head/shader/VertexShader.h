@@ -11,6 +11,6 @@ public:
    * 
    * @param the source code of the shader
    */
-  VertexShader(const char *sourceCode) : shader::Shader(GL_VERTEX_SHADER, sourceCode) {};
+  VertexShader(const char *filepath) : shader::Shader(GL_VERTEX_SHADER, filepath) {};
 };
 } // namespace shader

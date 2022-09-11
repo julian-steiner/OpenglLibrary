@@ -84,9 +84,16 @@ int main() {
       "}\0";
 
   shader::VertexShader vertexShader =
-      shader::VertexShader(vertexShaderSourceCode);
+      shader::VertexShader("../src/VertexShader.glsl");
+
   shader::FragmentShader fragmentShader =
-      shader::FragmentShader(fragmentShaderSourceCode);
+      shader::FragmentShader("../src/FragmentShader.glsl");
+  
+  // shader::VertexShader vertexShader =
+  //     shader::VertexShader(vertexShaderSourceCode);
+
+  // shader::FragmentShader fragmentShader =
+  //     shader::FragmentShader(fragmentShaderSourceCode);
 
   shader::ShaderProgram shaderProgram;
   shaderProgram.addShader(vertexShader);
